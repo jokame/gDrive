@@ -1,5 +1,5 @@
 var config = {
-    'client_id': '485111268922-h2tvs4ue56khfa4hfpb8mm93iqfcv9bk.apps.googleusercontent.com',
+    'client_id': '143824068550-doka54a292ihndn9fre2adrq0fdr1ss5.apps.googleusercontent.com',
     'scope': ['https://www.googleapis.com/auth/drive', 
 	'https://www.googleapis.com/auth/drive.appdata', 
 	'https://www.googleapis.com/auth/drive.apps.readonly', 
@@ -8,4 +8,4 @@ var config = {
 	'https://www.googleapis.com/auth/drive.readonly']
 	    
     }
-var apiKey = 'AIzaSyC_IRpidAa-TiyNM2gqJd27tXhNdso0OoI';
+var apiKey = 'AIzaSyAw8hFHmhxXGCT_iDdiC6E4i_uzug_vZoE';
