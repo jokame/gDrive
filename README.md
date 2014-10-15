@@ -1,30 +1,35 @@
 Mexbalia
 
-Manual: Acceso a Google Drive por medio de Javascript
+Google Drive Connector for SAP HANA
 
-1. Crear una cuenta de Google, que se usará para subir los archivos a la base de datos de HANA. 
+1. Crear una cuenta de Google, que se usará para subir los archivos a SAP HANA. 
 
 ![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap1.png)
 
 2. Acceder a https://www.console.developers.google.com con el usuario y contraseña de la cuenta de Google que se creó.
 
-3. Navegar a la pestaña de APIs y activar tanto la opción de Drive API como la de SDK API, como se muestra a continuación. 
+3. Crear un nuevo proyecto.
+
+4. En el menú izquierdo, seleccionar *APIs & auth*.
+
+5. En la lista de las APIs disponibles, activar Drive API y Drive SDK.
 
 ![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap2.png)
 
-4. Crear dos nuevos ClientIDs para aplicaciones Web, que Google usa para poder compartir información sin tener que revelar los usuarios y contraseñas de las personas. 
+6. Acceder a la pestaña de Credentials y crear un nuevo ID de cliente.
 
-5. Acceder a la pestaña de Credentials y crear un nuevo ID de cliente.
+7. En el campo "Authorized JavaScript origins" poner el host donde estará hospedada la aplicación. Si hay más de un origen, poner uno por línea.
 
-6. El primer ID de cliente va a ser para localhost, para que se puedan hacer pruebas en el servidor local. 
+8. En el campo "Authorized redirect URI" se puede poner: https://www.googleapis.com/auth/drive
 
-7. El segundo ID va a ser para el servidor principal. Cabe recalcar que se debe dejar el campo de “Redirect URIs” vacío en el ID del servidor. A continuación, se presenta una imagen de la configuración de dichos IDs. 
+9. El primer ID de cliente va a ser para localhost, para que se puedan hacer pruebas en el servidor local. 
 
 ![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap3.png)
 
+10. Crear una nueva llave para "Public API access" de tipo "Browser key".
 
-8. Dentro de la configuración del archivo de javascript, copiar y pegar el ClientID (del servidor o de localhost, dependiendo de en donde estés desarrollando) en una variable de configuración para que todo funcione de manera satisfactoria. 
+11. Dentro de la configuración del archivo de javascript (js/config.js), copiar y pegar el ClientID y el valor de ApiKey.
 
-![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap4.png)
+12. Terminar de configurar la aplicación en el menú izquierdo "Consent screen".
 
-NOTA: Recuerda que debes cambiar el ClientID si se quiere hacer la aplicación sobre otro servidor, o si se quiere pasar el contenido de localhost al servidor o viceversa. 
+La aplicación se utiliza desde "index.html"
