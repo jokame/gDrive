@@ -28,8 +28,6 @@ html,
 body {
   height: 100%;
   background-color: #0E81A7;
-}
-body {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
@@ -159,4 +157,9 @@ body {
   .cover-container {
     width: 700px;
   }
+}
+
+.modal-body{
+  color: #000;
+  text-shadow: none;
 }

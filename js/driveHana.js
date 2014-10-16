@@ -1,4 +1,5 @@
 var files = [];
+
 $.support.cors = true;
 
 function autentica(){
@@ -7,14 +8,19 @@ function autentica(){
     
     gapi.auth.authorize(config, function(){
 	
-	gapi.client.load('drive', 'v2', function(){
-	    var req = gapi.client.drive.files.list();
-	    
-	    req.execute(function(resp){
-		archivos(resp);
-		
-	    });
-	});
+		gapi.client.load('drive', 'v2', function(){
+		    var req = gapi.client.drive.files.list({q: "trashed=false", maxResults: 50});
+		    
+		    req.execute(function(resp){
+		    	
+		    	bootbox.confirm('Are you sure?', function(e){
+		    		if (e) {
+		    			archivos(resp);
+		    		};
+		    	});
+			
+		    });
+		});
     });
 }
 
@@ -29,6 +35,8 @@ function archivos(respuesta){
 	    var fileExt = respuesta.items[i].fileExtension;
 	    var mime = respuesta.items[i].mimeType;
 	    var download = respuesta.items[i].downloadUrl;
+
+	    console.log(titulo);
 	    
         if (download && mime == "text/plain"){
     		files.push({
@@ -42,6 +50,7 @@ function archivos(respuesta){
 	    }
 
 	}
+
 	getArchivos(files);
 }
 
@@ -81,7 +90,7 @@ function envio(encabezado,contenido){
 	var x = JSON.stringify(encabezado);
 	
 	
-jQuery.ajax({url:"js/insertaTabla.xsjs",data:{'x':x, 'y':y},
+	jQuery.ajax({url:"js/insertaTabla.xsjs",data:{'x':x, 'y':y},
 		method:'POST',
 		dataType:'json',
 		success: function(result){console.log(result.d.results + "OK");}});
