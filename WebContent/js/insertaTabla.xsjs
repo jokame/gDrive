@@ -25,7 +25,7 @@ var connection = $.db.getConnection();
 
 try{
 
-var catalogo = connection.prepareStatement("upsert \"GDRIVE\".\"CATALOGO\" values (?,?,?,?) with primary key");
+var catalogo = connection.prepareStatement("upsert \"GDRIVE\".\"CATALOGO\" values (?,?,?,?,0,'EN',null) with primary key");
 catalogo.setString(1,x[0]);
 catalogo.setString(2,x[1]);
 catalogo.setString(3,x[2]);

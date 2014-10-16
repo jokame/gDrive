@@ -46,4 +46,15 @@
 		<nature>com.sap.ide.ui5.app.plugin.webappnature</nature>
 		<nature>com.sap.ndb.studio.dwb.tools.core.hanaNature</nature>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1413426736846</id>
+			<name></name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-.git</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>

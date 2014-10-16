@@ -1,0 +1,13 @@
+PROCEDURE "GDRIVE"."gDrive.Classifier::BaseTokenizer" () 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	--DEFAULT SCHEMA <default_schema_name>
+	AS
+BEGIN
+TrainingBase = CE_COLUMN_TABLE("GDRIVE"."gDrive.Definition::Training_base");
+TrainingBaseToTokenize = CE_PROJECTION(:TrainingBase, [CE_CALC('rownum()',bigint) AS "ROW_ID","BASE_ID","TEXT" AS "FEATURE"]);
+TrainingBaseClasses =CE_PROJECTION(:TrainingBase, [CE_CALC('rownum()',bigint) AS "ROW_ID","CLASS"]);
+CALL "GDRIVE"."gDrive.Classifier/TOKENIZER"(:TrainingBaseToTokenize,TokenizedBase);
+insert into "GDRIVE"."gDrive.Definition::Training_base_tokens" select TOKENIZED."ROW_ID",TOKENIZED."BASE_ID", BASE."CLASS", TOKENIZED."FEATURE" from :TokenizedBase AS TOKENIZED INNER JOIN :TrainingBaseClasses AS BASE ON BASE."ROW_ID" = TOKENIZED."ROW_ID";
+
+END; 

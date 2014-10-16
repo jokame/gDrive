@@ -1,0 +1,7 @@
+table.schemaName = "GDRIVE";
+table.tableType = COLUMNSTORE;
+table.columns = [{name="ID_CAMP";sqlType=INTEGER;nullable = false;},
+{name="PID";sqlType=INTEGER;nullable = true;}, 
+{name="TRACK_WORDS";sqlType=VARCHAR;nullable = true;length=200;}, 
+{name="ESTADO";sqlType=VARCHAR;nullable = true;length=1;}];
+table.primaryKey.pkcolumns=["ID_CAMP"]; 

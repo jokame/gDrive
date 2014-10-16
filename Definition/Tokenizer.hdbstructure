@@ -1,0 +1,5 @@
+table.schemaName = "GDRIVE";
+table.tableType = COLUMNSTORE;
+table.columns = [{name="ROW_ID";sqlType=INTEGER;nullable = false;},
+{name="BASE_ID";sqlType=VARCHAR;nullable = false;length=20;},
+{name="FEATURE";sqlType=VARCHAR;nullable=false;length=400;}];

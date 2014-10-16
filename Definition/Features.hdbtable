@@ -1,0 +1,10 @@
+table.schemaName = "GDRIVE";
+table.tableType = COLUMNSTORE;
+table.columns = [{name="BASE_ID";sqlType=VARCHAR;nullable = false;length=20;},
+{name="CLASS";sqlType=VARCHAR;nullable = false;length=100;}, 
+{name="FEATURE";sqlType=VARCHAR;nullable = false;length=110;}, 
+{name="PERTENENCE_PROBABILITY";sqlType=DOUBLE;nullable = false;},
+{name="PROBABILITY_LN";sqlType=DOUBLE;nullable = true;}, 
+{name="WEIGHT";sqlType=DOUBLE;nullable = false;defaultValue="1";}];
+  
+table.primaryKey.pkcolumns=["BASE_ID","CLASS","FEATURE"];
