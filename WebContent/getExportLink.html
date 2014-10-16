@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Picker Example</title>
+
+
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    
+    <script type="text/javascript">
+
+      // The Browser API key obtained from the Google Developers Console.
+      var developerKey = 'AIzaSyAhehggUTYshX3_TFysy9q6jODr0RP2mmg';
+
+      // The Client ID obtained from the Google Developers Console.
+      var clientId = '376419829615-r4v9vn8fn2a5esu0cajse6d5huabb8sk.apps.googleusercontent.com';
+
+      // Scope to use to access user's photos.
+      var scope = ['https://www.googleapis.com/auth/drive.file'];
+
+      var pickerApiLoaded = false;
+      var oauthToken;
+
+      // Use the API Loader script to load google.picker and gapi.auth.
+      function onApiLoad() {
+        gapi.load('auth', {'callback': onAuthApiLoad});
+        gapi.load('picker', {'callback': onPickerApiLoad});
+      }
+
+      function onAuthApiLoad() {
+        window.gapi.auth.authorize(
+            {
+              'client_id': clientId,
+              'scope': scope,
+              'immediate': false
+            },
+            handleAuthResult);
+      }
+
+      function onPickerApiLoad() {
+        pickerApiLoaded = true;
+        createPicker();
+      }
+
+      function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+          oauthToken = authResult.access_token;
+          createPicker();
+        }
+      }
+
+      // Create and render a Picker object for picking user Photos.
+      function createPicker() {
+        if (pickerApiLoaded && oauthToken) {
+          var picker = new google.picker.PickerBuilder().
+              enableFeature(google.picker.Feature.NAV_HIDDEN).
+          	  enableFeature(google.picker.Feature.MULTISELECT_ENABLED).
+              addViewGroup(
+               new google.picker.ViewGroup(google.picker.ViewId.DOCS).
+                addView(google.picker.ViewId.DOCUMENTS)
+                ).
+              setOAuthToken(oauthToken).
+              //setDeveloperKey(developerKey).
+              setCallback(pickerCallback).
+              build();
+          picker.setVisible(true);
+        }
+      }
+
+      // A simple callback implementation.
+      function pickerCallback(data) {
+        var url = 'nothing';
+        if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+          var fileId = data[google.picker.Response.DOCUMENTS][0].id;
+          printFile(fileId);
+          fileContents(fileId);
+        }
+      }
+
+        function printFile(fileId) {
+           var request = new XMLHttpRequest();
+          request.open('GET', 'https://www.googleapis.com/drive/v2/files/' + fileId );
+          request.setRequestHeader('Authorization', 'Bearer ' + gapi.auth.getToken().access_token);
+
+          request.addEventListener('load', function(resp) {
+            var item = JSON.parse(request.responseText);
+            console.log('Title: ' + item.title);
+            console.log('MIME type: ' + item.mimeType);
+            console.log('Download URL: ' + item.downloadUrl);
+            console.log('Export Link: ' + item.exportLinks + '.text/plain');
+            console.log('Self Link: ' + item.selfLink);
+            console.log('User Permission: ' + item.userPermission.id);
+          });
+
+          request.send();
+        }
+
+      function fileContents(fileId){
+
+        var downloadUrl = 'https://docs.google.com/feeds/download/documents/export/Export?' + fileId + '&exportFormat=txt';
+
+        console.log(downloadUrl);
+
+        $.ajax({
+          
+          url: downloadUrl,
+          type: 'GET',
+          success: function(data){
+            console.log(data);
+          }
+
+        });
+
+      }  
+
+    </script>
+  </head>
+  <body>
+    <div id="result"></div>
+
+    <!-- The Google API Loader script. -->
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  </body>
+</html>
