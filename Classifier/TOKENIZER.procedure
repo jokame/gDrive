@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UDE:Procedure xmlns:UDE="http://www.sap.com/ndb/SQLCoreModelUDE.ecore" xmlns:DataTypes="http://www.sap.com/ndb/SQLCoreModelDataTypes.ecore" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="TOKENIZER" schemaVersion="2" procedureType="procedure" runWithInvokerPrivileges="true" language="RLANG" accessMode="ReadWrite">
+<descriptions defaultDescription=""/>
+<metadata changedAt ="2014-10-15 21:39:18.975" createdAt="2013-08-19 19:27:26.123"/>
+<origin/>
+<schema id="GDRIVE"/>
+<definition>                                            
+BEGIN
+library(&quot;data.table&quot;);
+tokenizer&lt;-function(input){
+row_id&lt;-input[1];
+  base_id&lt;-input[2];
+  text &lt;- tolower(input[3]);
+  TEXT &lt;- unique(unlist(strsplit(text,&quot;[^abcdefghijklmnopqrstuvwxyzáéíóúüñ&apos;]+&quot;))) 
+
+  ROW_ID &lt;- rep(row_id,length(TEXT));
+  BASE_ID&lt;- rep(base_id,length(TEXT));
+
+ REGR &lt;- data.frame(ROW_ID,BASE_ID,TEXT); 
+
+  return(REGR)
+}
+
+	library(parallel)
+cl &lt;- makeCluster(getOption(&apos;cl.cores&apos;, detectCores()));
+print(cl);
+tokens&lt;-parApply(cl,prueba,1,tokenizer);
+
+tokenized_output&lt;-as.data.frame.matrix(rbindlist(tokens));
+
+
+colnames(tokenized_output)&lt;-c(&quot;ROW_ID&quot;,&quot;BASE_ID&quot;,&quot;FEATURE&quot;);
+
+END;</definition>
+<defaultSchema schemaName="CLADRON"/>
+<parameters id="prueba" paramType="IN">
+  <typeReference schema="GDRIVE" name="&quot;gDrive.Definition::Tokenizer&quot;"/>
+</parameters>
+<parameters id="tokenized_output" paramType="OUT">
+  <typeReference schema="GDRIVE" name="&quot;gDrive.Definition::Tokenizer&quot;"/>
+</parameters>
+<localTableType>/*
+You can create new table types and use them as input and output parameters in a procedure.
+The table types must be defined using SQL syntax, for example:
+CREATE TYPE &lt;Type Name&gt; AS TABLE (&lt;Field Name1&gt; &lt;Field Type1&gt;, &lt;Field Name2&gt; &lt;Field Type2&gt;,...);
+*/
+
+</localTableType>
+<header>CREATE PROCEDURE GDRIVE.TOKENIZER(IN prueba GDRIVE.&quot;gDrive.Definition::Tokenizer&quot;,OUT tokenized_output GDRIVE.&quot;gDrive.Definition::Tokenizer&quot;)
+	LANGUAGE RLANG
+	SQL SECURITY INVOKER AS</header>
+</UDE:Procedure>
