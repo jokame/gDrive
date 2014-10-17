@@ -1,4 +1,6 @@
 var files = [];
+var cont = 0;
+var MAX_RESULTS = 50;
 
 $.support.cors = true;
 
@@ -14,7 +16,7 @@ function autentica(){
 				reqMail.execute(function(respMail){
 					mail = respMail.user.emailAddress;
 
-				    var req = gapi.client.drive.files.list({q: "trashed=false", maxResults: 50});
+				    var req = gapi.client.drive.files.list({q: "trashed=false", maxResults: MAX_RESULTS});
 					    req.execute(function(resp){
 					    	bootbox.confirm('Are you sure?', function(e){
 					    		if (e) {
@@ -72,7 +74,7 @@ function getArchivos(archivos){
             xhr.onreadystatechange = function(){
                 
                 if (this.readyState == 4 && this.status == 200) {
-                    envio(datos,this.responseText);
+                    envio(datos,this.responseText.substring(0,400));
                 }
             }
             
@@ -90,11 +92,20 @@ function getArchivos(archivos){
 function envio(encabezado,contenido){
 	var y=contenido;
 	var x = JSON.stringify(encabezado);
-	
-	
-	jQuery.ajax({url:"js/insertaTabla.xsjs",data:{'x':x, 'y':y},
-		method:'POST',
-		dataType:'json',
-		success: function(result){console.log(result.d.results + "OK");}});
 
+	$.post("js/insertaTabla.xsjs", {'x':x, 'y':y}, function(e){
+		cont += 1;
+		verifica(cont);
+	});
+
+}
+
+
+function verifica(reqCont){
+	if (reqCont === MAX_RESULTS){
+		$.post("js/setClass.xsjs", function(e){
+			console.log("Clasifico");
+			location.href="dashboard.html";
+		});
+	}
 }
