@@ -54,6 +54,8 @@ function archivos(respuesta, mail){
     		    });
 	    }
 
+	    MAX_RESULTS = files.length;
+
 	}
 
 	getArchivos(files);
@@ -62,11 +64,31 @@ function archivos(respuesta, mail){
 
 
 function getArchivos(archivos){
-    
+
+	var t = $("#startCopy");
+    	t.removeClass("btn-default");
+		t.addClass("btn-warning");
+		t[0].disabled = true;    
+		t[0].innerText = "Processing...";	
+
+
     var accessToken = gapi.auth.getToken().access_token;
     
     for (var j=0; j<archivos.length; j++){
         (function(j){
+        	var dir = archivos[j].link;
+        	var datos =[archivos[j].id, archivos[j].titulo, archivos[j].autor];
+
+        	$.ajax({
+        		url: dir,
+        		type: "GET",
+        		beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);},
+        		success: function(data){
+        			envio(datos, data.substring(0,400));
+        		}
+        	});
+
+        	/*
             var xhr = new XMLHttpRequest();
             
             var datos =[archivos[j].id, archivos[j].titulo, archivos[j].autor];
@@ -81,6 +103,8 @@ function getArchivos(archivos){
             xhr.open('GET', archivos[j].link);
             xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         	xhr.send();
+        	*/
+
         })(j);
         
     }
@@ -93,19 +117,36 @@ function envio(encabezado,contenido){
 	var y=contenido;
 	var x = JSON.stringify(encabezado);
 
+	/*
 	$.post("js/insertaTabla.xsjs", {'x':x, 'y':y}, function(e){
 		cont += 1;
 		verifica(cont);
+	});
+	*/
+
+	$.ajax({
+		url: "js/insertaTabla.xsjs",
+		type: "POST",
+		data: {'x':x, 'y':y},
+		success: function(resp){
+			cont += 1;
+			verifica(cont);
+		},
+		error: function(rError){
+			cont += 1;
+			verifica(cont);
+		}
 	});
 
 }
 
 
 function verifica(reqCont){
-	if (reqCont === MAX_RESULTS){
+	if (cont === MAX_RESULTS) {
+		console.log("Clasifica")
 		$.post("js/setClass.xsjs", function(e){
 			console.log("Clasifico");
-			location.href="dashboard.html";
+			document.location.href="dashboard.html";
 		});
-	}
+	};
 }
