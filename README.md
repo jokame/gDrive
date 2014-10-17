@@ -1,31 +1,29 @@
-Mexbalia
-
 Google Drive Connector for SAP HANA
 
-1. Crear una cuenta de Google, que se usará para subir los archivos a SAP HANA. 
+1. Create a google account that will be used for getting the user files. This is the "Google App". (Optional)
 
 ![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap1.png)
 
-2. Acceder a https://www.console.developers.google.com con el usuario y contraseña de la cuenta de Google que se creó.
+2. Go to https://www.console.developers.google.com with the Google App credentials.
 
-3. Crear un nuevo proyecto.
+3. Make a new project.
 
-4. En el menú izquierdo, seleccionar *APIs & auth*.
+4. On the left side, choose *APIs & auth*.
 
-5. En la lista de las APIs disponibles, activar Drive API y Drive SDK.
+5. Activate *Drive API* y *Drive SDK*.
 
 ![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap2.png)
 
-6. Acceder a la pestaña de Credentials y crear un nuevo ID de cliente.
+6. Go to *Credentials* and create a new *client ID*.
 
-7. En el campo "Authorized JavaScript origins" poner el host donde estará hospedada la aplicación. Si hay más de un origen, poner uno por línea.
+7. Fill the *Authorized JavaScript origins* with the URL where your SAP HANA App will be hosted. You can use more than one *origin*, but it is just one per line.
 
-8. En el campo "Authorized redirect URI" se puede poner: https://www.googleapis.com/auth/drive
+8. In the *Authorized redirect URI* you can put something like: https://www.googleapis.com/auth/drive
 
 ![](https://github.com/suecarmol/gDrive_P1/blob/master/screencaps/ScreenCap3.png)
 
-9. Crear una nueva llave para "Public API access" de tipo "Browser key".
+9. Create a new key for *Public API access*. Choose a *Browser key* type.
 
-10. Dentro de la configuración del archivo de javascript (js/config.js), copiar y pegar el ClientID y el valor de ApiKey.
+10. Copy and paste the ClientID and ApiKey from the Google App, to the configuration file in the SAP HANA App. This is located under *js/config.js*.
 
-11. Terminar de configurar la aplicación en el menú izquierdo "Consent screen".
+11. Finish the Google App configuration in the left menu *Consent screen*.
