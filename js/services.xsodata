@@ -1,0 +1,3 @@
+service namespace "mexbalia.hana.services"{
+	"_SYS_BIC"."gdriveGithub.gDrive/CA_DOCUMENTS" as "documents" keys generate local "Id" aggregates always (SUM of "TOTAL");
+}

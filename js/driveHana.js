@@ -1,6 +1,7 @@
 var files = [];
 var cont = 0;
 var MAX_RESULTS = 50;
+var mail = "";
 
 $.support.cors = true;
 
@@ -11,7 +12,6 @@ function autentica(){
 	
 		gapi.client.load('drive', 'v2', function(){
 
-			var mail = "";
 			var reqMail = gapi.client.drive.about.get();
 				reqMail.execute(function(respMail){
 					mail = respMail.user.emailAddress;
