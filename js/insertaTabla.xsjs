@@ -1,10 +1,7 @@
 var x = $.request.parameters.get("x");
 var y = $.request.parameters.get("y");
-//var y = $.request.body.asString();
 var st = x.toString();
 x = JSON.parse(st);
-//var longitud = y.length;
-
 
 function closeresource(r){
     if(r){

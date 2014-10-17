@@ -88,23 +88,6 @@ function getArchivos(archivos){
         		}
         	});
 
-        	/*
-            var xhr = new XMLHttpRequest();
-            
-            var datos =[archivos[j].id, archivos[j].titulo, archivos[j].autor];
-            
-            xhr.onreadystatechange = function(){
-                
-                if (this.readyState == 4 && this.status == 200) {
-                    envio(datos,this.responseText.substring(0,400));
-                }
-            }
-            
-            xhr.open('GET', archivos[j].link);
-            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-        	xhr.send();
-        	*/
-
         })(j);
         
     }
@@ -116,13 +99,6 @@ function getArchivos(archivos){
 function envio(encabezado,contenido){
 	var y=contenido;
 	var x = JSON.stringify(encabezado);
-
-	/*
-	$.post("js/insertaTabla.xsjs", {'x':x, 'y':y}, function(e){
-		cont += 1;
-		verifica(cont);
-	});
-	*/
 
 	$.ajax({
 		url: "js/insertaTabla.xsjs",

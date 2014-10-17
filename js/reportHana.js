@@ -42,9 +42,3 @@ function drawChart(mail){
 
   oChart.placeAt("reportChart");
 }
-
-// var oChart = new sap.viz.ui5.Pie("oChart",{  
-//   width : "100%",  
-//   height : "400px",  
-//   dataset : dataset  
-// }).placeAt("reportChart");  

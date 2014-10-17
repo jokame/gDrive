@@ -16,7 +16,6 @@ function getStatusCode(msg){
 var connection = $.db.getConnection();
 
 try{
-    //var qry = 'select * from DUMMY';
     var qry = 'CALL "GDRIVE"."gDrive.Classifier::ClassifyGDrive"()';
     var clasifica = connection.prepareStatement(qry);
     clasifica.execute();
