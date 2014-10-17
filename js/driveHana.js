@@ -5,38 +5,42 @@ $.support.cors = true;
 function autentica(){
     
     gapi.client.setApiKey(apiKey);
-    
     gapi.auth.authorize(config, function(){
 	
 		gapi.client.load('drive', 'v2', function(){
-		    var req = gapi.client.drive.files.list({q: "trashed=false", maxResults: 50});
-		    
-		    req.execute(function(resp){
-		    	
-		    	bootbox.confirm('Are you sure?', function(e){
-		    		if (e) {
-		    			archivos(resp);
-		    		};
-		    	});
-			
-		    });
+
+			var mail = "";
+			var reqMail = gapi.client.drive.about.get();
+				reqMail.execute(function(respMail){
+					mail = respMail.user.emailAddress;
+
+				    var req = gapi.client.drive.files.list({q: "trashed=false", maxResults: 50});
+					    req.execute(function(resp){
+					    	bootbox.confirm('Are you sure?', function(e){
+					    		if (e) {
+					    			archivos(resp, mail);
+					    		};
+					    	});
+						
+					    });
+
+				})
 		});
     });
 }
 
 
 
-function archivos(respuesta){
+function archivos(respuesta, mail){
     
 	for (i=0; i<respuesta.items.length; i++) {
 	    var titulo = respuesta.items[i].title;
-	    var autor = respuesta.items[i].ownerNames;
+	    //var autor = respuesta.items[i].ownerNames;
+	    var autor = mail;
 	    var fileId = respuesta.items[i].id;
 	    var fileExt = respuesta.items[i].fileExtension;
 	    var mime = respuesta.items[i].mimeType;
 	    var download = respuesta.items[i].downloadUrl;
-
-	    console.log(titulo);
 	    
         if (download && mime == "text/plain"){
     		files.push({
@@ -44,8 +48,7 @@ function archivos(respuesta){
     		    "link": download, 
     		    "ext": fileExt,
     		    "id": fileId, 
-    		    "autor": autor[0],
-    		    "cont": ""
+    		    "autor": autor
     		    });
 	    }
 
@@ -69,7 +72,6 @@ function getArchivos(archivos){
             xhr.onreadystatechange = function(){
                 
                 if (this.readyState == 4 && this.status == 200) {
-                    archivos[j].cont = this.responseText;
                     envio(datos,this.responseText);
                 }
             }
